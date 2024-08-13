@@ -36,24 +36,24 @@ class Message(BaseModel):
 #     with open("static/index.html") as f:
 #         return HTMLResponse(content=f.read(), status_code=200)
 
-@app.on_event("startup")
-async def startup_event():
-    global index, chat_engine
-    reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
-    docs = reader.load_data()
-    Settings.llm = OpenAI(
-        model="gpt-3.5-turbo-instruct",
-        temperature=0.3,
-        system_prompt= """ You are a specialized expert in VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO). 
-                        Your role is to provide accurate, technical answers strictly based on the provided data. Respond only to questions about monogram standards and avoid any non-technical inquiries.
-                        If a question falls outside your expertise, reply that you are designed to address questions related to API and ISO standards only.
-                        Ensure your answers are fact-based, precise, and free of unsupported claims or hallucinations. You must never answer any non-technical questions"""
-                    ) 
+# @app.on_event("startup")
+# async def startup_event():
+#     global index, chat_engine
+#     reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
+#     docs = reader.load_data()
+#     Settings.llm = OpenAI(
+#         model="gpt-3.5-turbo-instruct",
+#         temperature=0.3,
+#         system_prompt= """ You are a specialized expert in VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO). 
+#                         Your role is to provide accurate, technical answers strictly based on the provided data. Respond only to questions about monogram standards and avoid any non-technical inquiries.
+#                         If a question falls outside your expertise, reply that you are designed to address questions related to API and ISO standards only.
+#                         Ensure your answers are fact-based, precise, and free of unsupported claims or hallucinations. You must never answer any non-technical questions"""
+#                     ) 
 
-    index = VectorStoreIndex.from_documents(docs)
-    chat_engine = index.as_chat_engine(
-        chat_mode="condense_question", verbose=True, streaming=True
-    )
+#     index = VectorStoreIndex.from_documents(docs)
+#     chat_engine = index.as_chat_engine(
+#         chat_mode="condense_question", verbose=True, streaming=True
+#     )
 
 
 async def enhance_response(response: str, query: str) -> str:
