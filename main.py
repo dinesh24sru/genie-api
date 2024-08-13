@@ -7,6 +7,8 @@ from llama_index.llms.openai import OpenAI
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
 from dotenv import load_dotenv
 import os
+from fastapi.middleware.cors import CORSMiddleware
+
 
 load_dotenv()
 
@@ -14,6 +16,13 @@ app = FastAPI()
  
 openai.api_key =  os.environ.get("OPENAI_KEY")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://lively-forest-09162750f.5.azurestaticapps.net"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Message(BaseModel): 
     role: str
