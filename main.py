@@ -5,11 +5,14 @@ from pydantic import BaseModel
 import openai
 from llama_index.llms.openai import OpenAI
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 app = FastAPI()  
  
-openai.api_key = "sk-proj-SRRTsUWKeCQ3Oz3ENiVLT3BlbkFJYDlCSGXbPfCeGa1YCwkS"
+openai.api_key =  os.environ.get("OPENAI_KEY")
 
 
 class Message(BaseModel): 
@@ -19,10 +22,10 @@ class Message(BaseModel):
 # app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def get():
-    with open("static/index.html") as f:
-        return HTMLResponse(content=f.read(), status_code=200)
+# @app.get("/", response_class=HTMLResponse)
+# async def get():
+#     with open("static/index.html") as f:
+#         return HTMLResponse(content=f.read(), status_code=200)
 
 @app.on_event("startup")
 async def startup_event():
