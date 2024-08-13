@@ -98,6 +98,10 @@ async def enhance_response(response: str, query: str) -> str:
         print(f"Error enhancing response: {e}")
         return response
 
+@app.options("/chat")
+async def options_chat_endpoint():
+    return {}
+
 @app.post("/chat")
 async def chat(message: Message):
     if message.role != "user":
