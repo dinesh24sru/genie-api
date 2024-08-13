@@ -16,7 +16,7 @@ class Message(BaseModel):
     role: str
     content: str
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/", response_class=HTMLResponse)
