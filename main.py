@@ -27,6 +27,10 @@ app.add_middleware(
 class Message(BaseModel): 
     role: str
     content: str
+ 
+@app.get("/")
+async def helloapp():
+    return {"message": "Hello App"}
 
 # app.mount("/static", StaticFiles(directory="static"), name="static")
 
