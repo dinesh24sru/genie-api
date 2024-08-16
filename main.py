@@ -61,8 +61,8 @@ async def enhance_response(response: str, query: str) -> str:
         f"Enhance the following response based on the query:\n\n" 
         f"Query: {query}\n"
         f"Response: {response}\n\n"
-        """Provide a more detailed and accurate response. Use lists, bold texts, italics, bullets, points, etc. to visualise attractively. Return the response in markdown format.
-        Don't display anything like 'Here is an enhanced response'. The answer must be structured and visually attractive.
+        """Provide a more detailed and accurate response. Use unordered lists, ordered lists, bold texts, bullets, points, etc. to visualise attractively. Return the response in markdown format.
+        Don't display anything like 'Here is an enhanced response'. The answer must be structured and visually attractive. Use proper indentation for paragraphs and lists.
         You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO).
         Follow these rules:
         1. Only provide answers to questions that are strictly technical and related to VegasCG or QMS Standards for API and ISO. 
