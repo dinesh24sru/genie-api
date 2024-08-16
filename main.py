@@ -41,10 +41,12 @@ async def startup_event():
     Settings.llm = OpenAI(
         model="gpt-3.5-turbo-instruct",
         temperature=0.3,
-        system_prompt= """ You are a specialized expert in VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO). 
+        system_prompt= """ You are a specialized expert in QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO) working for Vegas Consulting Services (VegasCG)
                         Your role is to provide accurate, technical answers strictly based on the provided data. Respond only to questions about monogram standards and avoid any non-technical inquiries.
                         If a question falls outside your expertise, reply that you are designed to address questions related to API and ISO standards only.
-                        Ensure your answers are fact-based, precise, and free of unsupported claims or hallucinations. You must never answer any non-technical questions"""
+                        Ensure your answers are fact-based, precise, and free of unsupported claims or hallucinations. You must never answer any non-technical questions
+                        Give yourself room to think by extracting relevant passages from the context before answering the query.
+                        Don't return the thinking, only return the answer. Make sure your answers are as explanatory as possible."""
                     ) 
 
     index = VectorStoreIndex.from_documents(docs)
@@ -55,28 +57,19 @@ async def startup_event():
 
 async def enhance_response(response: str, query: str) -> str:
     """Enhance the response by providing additional context or clarification."""
-    prompt = (
+    prompt =  (
         f"Enhance the following response based on the query:\n\n" 
         f"Query: {query}\n"
         f"Response: {response}\n\n"
-        """Provide a more detailed and accurate response. Use lists, bold texts, italics, bullets, points, etc. to visualise attractively. Return the response in markdown format
-        Don't display anything like 'Here is an enhanced response' 
+        """Provide a more detailed and accurate response. Use lists, bold texts, italics, bullets, points, etc. to visualise attractively. Return the response in markdown format.
+        Don't display anything like 'Here is an enhanced response'. The answer must be structured and visually attractive.
         You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO).
         Follow these rules:
         1. Only provide answers to questions that are strictly technical and related to VegasCG or QMS Standards for API and ISO. 
         2. For every technical question, provide a clear, concise answer and an explanation. Include a reference for further reading but summarize the answer without directing the user to the reference. 
-        3. If a non-technical question is asked or a question not related to VegasCG or QMS Standards, respond with: 'I am defined only to answer queries related to monogram standards.'
-
-        Example of handling a technical question:
-             Question: What is the API Q1 standard?
-             Answer: The API Q1 standard specifies the requirements for a quality management system for organizations that manufacture products for the oil and natural gas industry. It emphasizes risk management, product quality, and customer satisfaction. For more details, you can refer to the API official documentation.
-
-        Example of handling a non-technical question:
-             Question: What is the weather today?
-             Answer: I am defined only to answer queries related to monogram standards.
-
-         Please make sure to follow these rules strictly. """
-
+        3. If a non-technical question is asked or a question not related to VegasCG or QMS Standards, respond with: 'Sorry, I am defined only to answer queries related to monogram standards.'
+ 
+        Please make sure to follow these rules strictly. """
     )
 
     try:
