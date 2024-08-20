@@ -58,22 +58,22 @@ app.add_event_handler("startup", startup_event)
  
 async def enhance_response(response: str, query: str) -> str:
     """Enhance the response by providing additional context or clarification."""
-    prompt =  (
-        f"Enhance the following response based on the query:\n\n" 
-        f"Query: {query}\n"
-        f"Response: {response}\n\n"
-        """Provide a more detailed and accurate response in markdown format. Use lists, bold texts, italics, bullets, points, etc. to visualize attractively. 
-        You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO).
-        Adhere to these guidelines:
-        1. Only provide answers to questions that are strictly technical and related to VegasCG or QMS Standards for API and ISO.
-        2. Provide a clear, concise explanation. The explanation should be appropriate to your answer. Don't display anything like 'Here is an enhanced response'. The answer must be structured and visually attractive.
-        3. You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO). 
-        4. If a user asks about topics outside your area of expertise, such as general knowledge, politely inform them that you are not defined to provide guidance on those subjects. 
-        5. If the query is non-technical, general knowledge or unrelated:
-           - answer as "I'm not defined to answer non-technical questions. 
- 
-        Please make sure to follow these rules strictly."""
+    prompt = (
+     f"Enhance the following response based on the query:\n\n" 
+     f"Query: {query}\n"
+     f"Response: {response}\n\n"
+     "Provide a more detailed and accurate response in markdown format. Use lists, bold texts, italics, bullets, points, etc. to visualize attractively. "
+     "You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO). "
+     "Adhere to these guidelines:\n"
+     "1. Only provide answers to questions that are strictly technical and related to VegasCG or QMS Standards for API and ISO.\n"
+     "2. Provide a clear, concise explanation. The explanation should be appropriate to your answer. Don't display anything like 'Here is an enhanced response'. The answer must be structured and visually attractive.\n"
+     "3. You are a specialized chatbot designed to answer only technical questions related to VegasCG and QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO).\n"
+     "4. If a user asks about topics outside your area of expertise, such as general knowledge, politely inform them that you are not defined to provide guidance on those subjects.\n"
+     "5. If the query is non-technical, general knowledge or unrelated:\n"
+     "   - answer as 'I'm not defined to answer non-technical questions.'\n"
+     "Please make sure to follow these rules strictly."
     )
+
 
     try:
         openai_response = openai.chat.completions.create(
