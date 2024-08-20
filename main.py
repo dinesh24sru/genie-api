@@ -37,25 +37,25 @@ async def helloapp():
 
 @app.on_event("startup")
 async def startup_event():
-  global index, chat_engine
+    global index, chat_engine
     # Azure Blob Storage setup
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
     container_name = "indexed-file"
     blob_name = "index.pkl"
-
+    
     # Download the indexed data from Azure Blob Storage
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
     blob_data = blob_client.download_blob().readall()
-
+    
     # Deserialize the data (assuming it's stored in a serialized format like pickle)
     indexed_data = pickle.loads(blob_data)
-
+    
     # Load the data into the VectorStoreIndex
     index = indexed_data
     chat_engine = index.as_chat_engine(
         chat_mode="condense_question", verbose=True, streaming=True
     )
-
+ 
 async def enhance_response(response: str, query: str) -> str:
     """Enhance the response by providing additional context or clarification."""
     prompt =  (
@@ -93,7 +93,7 @@ async def enhance_response(response: str, query: str) -> str:
 
 @app.options("/chat")
 async def options_chat_endpoint():
-    return {}
+ return {}
 
 @app.post("/chat")
 async def chat(message: Message):
