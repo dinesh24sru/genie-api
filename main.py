@@ -8,17 +8,19 @@ from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
 from dotenv import load_dotenv
 import os
 from fastapi.middleware.cors import CORSMiddleware
-
+from azure.storage.blob import BlobServiceClient
+import pickle
 
 load_dotenv()
 
 app = FastAPI()  
  
 openai.api_key =  os.environ.get("OPENAI_KEY")
+connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://lively-forest-09162750f.5.azurestaticapps.net"],
+    allow_origins=["https://vegascg-genie-chat.azurewebsites.net"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,26 +37,24 @@ async def helloapp():
 
 @app.on_event("startup")
 async def startup_event():
-    global index, chat_engine
-    reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
-    docs = reader.load_data()
-    Settings.llm = OpenAI(
-        model="gpt-3.5-turbo-instruct",
-        temperature=0.3,
-        system_prompt= """ You are a specialized expert in QMS Standards for the American Petroleum Institute (API) and the International Organization for Standardization (ISO) working for Vegas Consulting Services (VegasCG)
-                        Your role is to provide accurate, technical answers strictly based on the provided data. Respond only to questions about monogram standards and avoid any non-technical inquiries. 
-                        Don't answer the questions which are not related to monogram standards. You are built only to answer monogram related questions.
-                        If a question falls outside your expertise, reply that you are designed to address questions related to API and ISO standards only.
-                        Ensure your answers are fact-based, precise, and free of unsupported claims or hallucinations. You must never answer any non-technical questions
-                        Give yourself room to think by extracting relevant passages from the context before answering the query.
-                        Don't return the thinking, only return the answer. Make sure your answers are as explanatory as possible."""
-                    ) 
+  global index, chat_engine
+    # Azure Blob Storage setup
+    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+    container_name = "indexed-file"
+    blob_name = "index.pkl"
 
-    index = VectorStoreIndex.from_documents(docs)
+    # Download the indexed data from Azure Blob Storage
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+    blob_data = blob_client.download_blob().readall()
+
+    # Deserialize the data (assuming it's stored in a serialized format like pickle)
+    indexed_data = pickle.loads(blob_data)
+
+    # Load the data into the VectorStoreIndex
+    index = indexed_data
     chat_engine = index.as_chat_engine(
         chat_mode="condense_question", verbose=True, streaming=True
     )
-
 
 async def enhance_response(response: str, query: str) -> str:
     """Enhance the response by providing additional context or clarification."""
