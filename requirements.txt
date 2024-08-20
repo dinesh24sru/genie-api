@@ -8,3 +8,4 @@ pypdf
 scikit-learn
 openpyxl
 python-dotenv
+azure-storage-blob
