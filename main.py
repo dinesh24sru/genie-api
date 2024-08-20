@@ -20,7 +20,7 @@ connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://lively-forest-09162750f.5.azurestaticapps.net"],
+    allow_origins=["https://vegascg-genie-chat.azurewebsites.net"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
