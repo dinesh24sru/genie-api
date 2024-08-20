@@ -35,7 +35,7 @@ async def helloapp():
     return {"message": "Hello App"}
 
 
-#@app.on_event("startup")
+@app.on_event("startup")
 async def startup_event():
     global index, chat_engine
     # Azure Blob Storage setup
@@ -55,7 +55,7 @@ async def startup_event():
     chat_engine = index.as_chat_engine(
         chat_mode="condense_question", verbose=True, streaming=True
     )
- app.add_event_handler("startup", startup_event)
+ 
  
 async def enhance_response(response: str, query: str) -> str:
     """Enhance the response by providing additional context or clarification."""
