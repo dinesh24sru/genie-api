@@ -78,7 +78,7 @@ async def enhance_response(response: str, query: str) -> str:
 
     try:
         openai_response = openai.chat.completions.create(
-            model="gpt-3.5-turbo-instruct",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are an expert providing enhanced answers based on given queries and responses."},
                 {"role": "user", "content": prompt}
