@@ -73,7 +73,7 @@ async def enhance_response(response: str, query: str) -> str:
      "   - answer as 'I'm not defined to answer non-technical questions. Ask me anything related to monogram standards'\n"
      "6. Make sure your answers are as explanatory as possible. \n"
      "Please make sure to follow these rules strictly."
-     )
+    )
 
     try:
         openai_response = openai.chat.completions.create(
