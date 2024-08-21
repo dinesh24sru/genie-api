@@ -83,7 +83,7 @@ async def enhance_response(response: str, query: str) -> str:
                 {"role": "system", "content": "You are an expert providing enhanced answers based on given queries and responses."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=512
+            max_tokens=300
         )
         
         enhanced_content = openai_response.choices[0].message.content
